@@ -11,7 +11,7 @@ pipeline {
         }
         stage('Test on Linux') {
             agent { 
-                label 'linux'
+                label 'Linux'
             }
             steps {
                 unstash 'app' 
@@ -25,7 +25,7 @@ pipeline {
         }
         stage('Test on Windows') {
             agent {
-                label 'windows'
+                label 'Windows'
             }
             steps {
                 unstash 'app'
