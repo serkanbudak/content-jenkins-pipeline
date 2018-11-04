@@ -10,17 +10,14 @@ pipeline {
           steps {
             echo 'Hi!'
           }
-        }
-      }
-      
-            stages {
-        stage('Checout') {
+           stage('Checkout') {
           steps {
             checkout scm
           }
         }
       }
-
+      
+           
       post {
         always {
           deleteDir()
