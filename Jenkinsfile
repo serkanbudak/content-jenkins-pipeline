@@ -1,23 +1,41 @@
 pipeline {
-  agent none
-
-  stages {
-    stage('Hello World') {
-      agent any
-
-      stages {
-        stage('Nested') {
-          steps {
-            echo 'Hi!'
-          }
+    agent none
+    stages {
+        stage('Build') {
+            agent any
+            steps {
+                checkout scm
+                sh 'make'
+                stash includes: '**/target/*.jar', name: 'app' 
+            }
         }
-      }
-
-      post {
-        always {
-          deleteDir()
+        stage('Test on Linux') {
+            agent { 
+                label 'linux'
+            }
+            steps {
+                unstash 'app' 
+                sh 'make check'
+            }
+            post {
+                always {
+                    junit '**/target/*.xml'
+                }
+            }
         }
-      }
+        stage('Test on Windows') {
+            agent {
+                label 'windows'
+            }
+            steps {
+                unstash 'app'
+                bat 'make check' 
+            }
+            post {
+                always {
+                    junit '**/target/*.xml'
+                }
+            }
+        }
     }
-  }
 }
