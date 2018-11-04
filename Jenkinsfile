@@ -12,6 +12,14 @@ pipeline {
           }
         }
       }
+      
+            stages {
+        stage('Checout') {
+          steps {
+            checkout scm
+          }
+        }
+      }
 
       post {
         always {
